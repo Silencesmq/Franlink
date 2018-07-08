@@ -1,13 +1,12 @@
-package com.example.silence.franlink;
+package com.example.silence.franlink.util;
 
-import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
+
+import com.example.silence.franlink.bean.Event;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.greenrobot.eventbus.EventBus;
 
 public class MqttCallbackBus implements MqttCallback {
 

@@ -1,4 +1,6 @@
-package com.example.silence.franlink;
+package com.example.silence.franlink.util;
+
+import com.example.silence.franlink.bean.Event;
 
 import org.greenrobot.eventbus.EventBus;
 

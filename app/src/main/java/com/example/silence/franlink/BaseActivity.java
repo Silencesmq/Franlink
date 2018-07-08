@@ -1,9 +1,9 @@
 package com.example.silence.franlink;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+
+import com.example.silence.franlink.bean.Event;
+import com.example.silence.franlink.util.EventBusUtil;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

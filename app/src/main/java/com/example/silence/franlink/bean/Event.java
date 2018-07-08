@@ -1,4 +1,4 @@
-package com.example.silence.franlink;
+package com.example.silence.franlink.bean;
 
 public class Event<T> {
     private int code;

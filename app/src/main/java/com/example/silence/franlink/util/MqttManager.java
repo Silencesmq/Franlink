@@ -1,4 +1,4 @@
-package com.example.silence.franlink;
+package com.example.silence.franlink.util;
 
 import android.util.Log;
 

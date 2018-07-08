@@ -7,6 +7,10 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.silence.franlink.bean.Event;
+import com.example.silence.franlink.util.EventBusUtil;
+import com.example.silence.franlink.util.MqttManager;
+
 
 public class MainActivity extends BaseActivity {
     int flagview;
