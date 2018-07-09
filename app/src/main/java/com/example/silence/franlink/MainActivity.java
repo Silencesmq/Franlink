@@ -5,22 +5,47 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.example.silence.franlink.adapter.TabFragmentPagerAdapter;
 import com.example.silence.franlink.bean.Event;
+import com.example.silence.franlink.fragment.Mydevicefragment;
+import com.example.silence.franlink.fragment.Myscenefragment;
 import com.example.silence.franlink.util.EventBusUtil;
 import com.example.silence.franlink.util.MqttManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
-    int flagview;
-
+    private Button tv_item_one;
+    private Button tv_item_two;
+    private ViewPager myViewPager;
+    private List<Fragment> list;
+    private TabFragmentPagerAdapter adapter;
+    private DrawerLayout mDrawerLayout;
+    private Toolbar toolbar;
     @Override
     protected boolean isRegisterEventBus() {
         return true;
@@ -57,33 +82,116 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         EventBusUtil.register(this);
         setContentView(R.layout.activity_main);
-        MqttManager.getInstance().creatConnect("tcp://139.196.139.63:1883", "android", "123456", "789", "fire");
-        MqttManager.getInstance().subscribe("fire", 1);
-        WebView webView = (WebView) findViewById(R.id.web_view);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setUseWideViewPort(true);
-        webView.getSettings().setLoadWithOverviewMode(true);
-        webView.setWebViewClient(new WebViewClient());
-        webView.loadUrl("http://139.196.139.63/an_temhum.php");
-        flagview = 1;
-        Button button_1 = (Button) findViewById(R.id.button1);
-        button_1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MqttManager.getInstance().publish("gpio", 1, "{\"pin\":10,\"value\": 1}");
-            }
-        });
-        Button button_2 = (Button) findViewById(R.id.button2);
-        button_2.setOnClickListener(this);
+
+        InitView();
+        InitEvent();
 
     }
 
+    private void InitView() {
+        tv_item_one = (Button) findViewById(R.id.tv_item_one);
+        tv_item_two = (Button) findViewById(R.id.tv_item_two);
+        myViewPager = (ViewPager) findViewById(R.id.myViewPager);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        }
+        navView.setCheckedItem(R.id.profile);
+        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                mDrawerLayout.closeDrawers();
+                return true;
+            }
+        });
+    }
+
+    private void InitEvent() {
+        // 设置菜单栏的点击事件
+        tv_item_one.setOnClickListener(this);
+        tv_item_two.setOnClickListener(this);
+        myViewPager.setOnPageChangeListener(new MyPagerChangeListener());
+
+        //把Fragment添加到List集合里面
+        list = new ArrayList<>();
+        list.add(new Mydevicefragment());
+        list.add(new Myscenefragment());
+        adapter = new TabFragmentPagerAdapter(getSupportFragmentManager(), list);
+        myViewPager.setAdapter(adapter);
+        myViewPager.setCurrentItem(0);  //初始化显示第一个页面
+        tv_item_one.setBackgroundColor(Color.RED);//被选中就为红色
+    }
+//Button 点击事件
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.button2:
-                Intent intent = new Intent(this,TempandhumActivity.class);
-                startActivity(intent);
+            case R.id.tv_item_one:
+                myViewPager.setCurrentItem(0);
+                tv_item_one.setBackgroundColor(Color.RED);
+                tv_item_two.setBackgroundColor(Color.WHITE);
+                break;
+            case R.id.tv_item_two:
+                myViewPager.setCurrentItem(1);
+                tv_item_one.setBackgroundColor(Color.WHITE);
+                tv_item_two.setBackgroundColor(Color.RED);
+                break;
+
         }
     }
+
+//Viewpager 监听事件
+    public class MyPagerChangeListener implements ViewPager.OnPageChangeListener {
+
+        @Override
+        public void onPageScrollStateChanged(int arg0) {
+        }
+
+        @Override
+        public void onPageScrolled(int arg0, float arg1, int arg2) {
+        }
+
+        @Override
+        public void onPageSelected(int arg0) {
+            switch (arg0) {
+                case 0:
+                    tv_item_one.setBackgroundColor(Color.RED);
+                    tv_item_two.setBackgroundColor(Color.WHITE);
+                    break;
+                case 1:
+                    tv_item_one.setBackgroundColor(Color.WHITE);
+                    tv_item_two.setBackgroundColor(Color.RED);
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                break;
+            case R.id.adddevice:
+                Toast.makeText(this, "adddevice", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.addscene:
+                Toast.makeText(this, "adds", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+        }
+        return true;
+    }
+
 }
