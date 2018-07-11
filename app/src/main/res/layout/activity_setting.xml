@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingActivity">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/button_faceregister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:text="添加人脸信息"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:paddingLeft="20dp"
+            android:text="设置安全验证方式："/>
+        <RadioGroup
+            android:id="@+id/radiogroup_verify"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:paddingLeft="20dp"
+            android:orientation="vertical" >
+
+            <RadioButton
+                android:id="@+id/radio_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="密码验证" />
+            <RadioButton
+                android:id="@+id/radio_face"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="人脸识别" />
+            <RadioButton
+                android:id="@+id/radio_finger"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="指纹识别" />
+        </RadioGroup>
+        <Button
+            android:id="@+id/button_facedetecter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="检测人脸"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/button_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="60dp"
+        android:layout_centerHorizontal="true"
+        android:text="注销"/>
+</RelativeLayout>
