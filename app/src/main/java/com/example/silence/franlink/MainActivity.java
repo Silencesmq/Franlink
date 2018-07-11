@@ -29,7 +29,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBusUtil.register(this);
         setContentView(R.layout.activity_main);
         MqttManager.getInstance().creatConnect("tcp://139.196.139.63:1883", "android", "123456", "789","fire");
         MqttManager.getInstance().subscribe("fire",1);
