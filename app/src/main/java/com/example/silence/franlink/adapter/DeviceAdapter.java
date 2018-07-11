@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.silence.franlink.Application;
 import com.example.silence.franlink.FacedetecterActivity;
+import com.example.silence.franlink.FingerdetecterActivity;
 import com.example.silence.franlink.Item.Device;
 import com.example.silence.franlink.R;
 import com.example.silence.franlink.SettingActivity;
@@ -87,7 +88,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
                                 break;
                             }
                             case SettingActivity.Verify_fing:
-                                Toast.makeText(view.getContext(),"choose_fing",Toast.LENGTH_SHORT).show();
+                                Intent it = new Intent(view.getContext(), FingerdetecterActivity.class);
+                                view.getContext().startActivity(it);
                                 break;
                         }
                         break;
