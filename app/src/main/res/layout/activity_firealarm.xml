@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FirealarmActivity">
+    tools:context=".FirealarmActivity"
+    android:background="@drawable/beijing">
     <TextView
         android:id="@+id/textView_firealarm"
         android:layout_width="wrap_content"

@@ -141,6 +141,18 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position) {
         Device device=mDeviceList.get(position);
         holder.deviceName.setText(device.getName());
+        switch (device.getType()){
+            case Device.deviceType.Intellock:
+                holder.deviceImage.setImageResource(R.drawable.lock);
+                break;
+            case Device.deviceType.Temhum:
+                holder.deviceImage.setImageResource(R.drawable.temperature2);
+                break;
+            case Device.deviceType.Firesensor:
+                holder.deviceImage.setImageResource(R.drawable.fire);
+                break;
+
+        }
     }
 
     @Override

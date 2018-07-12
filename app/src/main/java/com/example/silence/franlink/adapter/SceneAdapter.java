@@ -76,6 +76,15 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.ViewHolder> 
     public void onBindViewHolder(SceneAdapter.ViewHolder holder, int position) {
         Scene scene=mSceneList.get(position);
         holder.sceneName.setText(scene.getName());
+        if(scene.getName().equals("回家")){
+            holder.sceneImage.setImageResource(R.drawable.gohome);
+        }else if(scene.getName().equals("起床")){
+            holder.sceneImage.setImageResource(R.drawable.sun);
+        }else if(scene.getName().equals("睡觉")){
+            holder.sceneImage.setImageResource(R.drawable.sleep);
+        }else {
+            holder.sceneImage.setImageResource(R.drawable.house);
+        }
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -49,6 +50,7 @@ import org.json.JSONObject;
 import org.litepal.LitePal;
 import org.litepal.crud.DataSupport;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -118,11 +120,12 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 .setContentTitle("紧急！起火了！")
                 .setContentText("你家后院起火了！")
                 .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+                .setSmallIcon( R.drawable.firess)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.fires))
                 .setContentIntent(pi)
                 .setAutoCancel(true)                       //点击自动取消
                 .setVibrate(new long[]{0, 1000, 1000, 1000}) //震动
+                .setSound(Uri.fromFile(new File("/system/media/audio/ringtones/Basic_Bell.ogg")))
                 .build();
         manager.notify(1, notification);
     }
@@ -193,6 +196,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 switch (item.getItemId()){
                     case R.id.profile:
                         mDrawerLayout.closeDrawers();
+                        firenotification();
                         break;
                     case R.id.setting:
                         Intent i=new Intent(HomeActivity.this, SettingActivity.class);
@@ -219,7 +223,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         adapter = new TabFragmentPagerAdapter(getSupportFragmentManager(), list);
         myViewPager.setAdapter(adapter);
         myViewPager.setCurrentItem(0);  //初始化显示第一个页面
-        tv_item_one.setBackgroundColor(Color.RED);//被选中就为红色
+
     }
     //Button 点击事件
     @Override
@@ -227,13 +231,17 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.tv_item_one:
                 myViewPager.setCurrentItem(0);
-                tv_item_one.setBackgroundColor(Color.RED);
-                tv_item_two.setBackgroundColor(Color.WHITE);
+                tv_item_one.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.houseblue32,0, 0);
+                tv_item_one.setTextColor(getResources().getColor(R.color.colorPrimary));
+                tv_item_two.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.housegrey32,0, 0);
+                tv_item_two.setTextColor(getResources().getColor(R.color.colorbackgroud));
                 break;
             case R.id.tv_item_two:
                 myViewPager.setCurrentItem(1);
-                tv_item_one.setBackgroundColor(Color.WHITE);
-                tv_item_two.setBackgroundColor(Color.RED);
+                tv_item_two.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.houseblue32,0, 0);
+                tv_item_two.setTextColor(getResources().getColor(R.color.colorPrimary));
+                tv_item_one.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.housegrey32,0, 0);
+                tv_item_one.setTextColor(getResources().getColor(R.color.colorbackgroud));
                 break;
 
         }
@@ -254,12 +262,18 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         public void onPageSelected(int arg0) {
             switch (arg0) {
                 case 0:
-                    tv_item_one.setBackgroundColor(Color.RED);
-                    tv_item_two.setBackgroundColor(Color.WHITE);
+                    myViewPager.setCurrentItem(0);
+                    tv_item_one.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.houseblue32,0, 0);
+                    tv_item_one.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    tv_item_two.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.housegrey32,0, 0);
+                    tv_item_two.setTextColor(getResources().getColor(R.color.colorbackgroud));
                     break;
                 case 1:
-                    tv_item_one.setBackgroundColor(Color.WHITE);
-                    tv_item_two.setBackgroundColor(Color.RED);
+                    myViewPager.setCurrentItem(1);
+                    tv_item_two.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.houseblue32,0, 0);
+                    tv_item_two.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    tv_item_one.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.housegrey32,0, 0);
+                    tv_item_one.setTextColor(getResources().getColor(R.color.colorbackgroud));
                     break;
             }
         }

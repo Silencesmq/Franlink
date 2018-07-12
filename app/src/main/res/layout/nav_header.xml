@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="180dp"
-    android:background="?attr/colorPrimary"
+    android:background="@drawable/jiaju"
     android:padding="10dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -10,7 +10,7 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_centerInParent="true"
-        android:src="@drawable/nav_icon" />
+        android:src="@drawable/headpotrait" />
 
     <TextView
         android:id="@+id/username"

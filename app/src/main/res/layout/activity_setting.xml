@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingActivity">
+    tools:context=".SettingActivity"
+    android:background="@drawable/beijing2">
     <LinearLayout
         android:id="@+id/linearLayout_vreify"
         android:orientation="vertical"
@@ -16,7 +17,8 @@
             android:layout_marginTop="30dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:text="添加人脸信息"/>
+            android:text="添加人脸信息"
+            android:theme="@style/AppTheme.Button"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -71,5 +73,6 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="60dp"
         android:layout_centerHorizontal="true"
-        android:text="注销"/>
+        android:text="注销"
+        android:theme="@style/AppTheme.Button"/>
 </RelativeLayout>

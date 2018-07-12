@@ -8,6 +8,7 @@ public class Scene extends LitePalSupport {
     private String name;
     private String owner;
     private int type;
+
     public Scene(long number,String name,int type,String owner){
         this.number=number;
         this.name=name;

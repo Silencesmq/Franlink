@@ -16,6 +16,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.silence.franlink.Item.Device;
+import com.example.silence.franlink.Item.Scene;
+
 import java.util.Date;
 
 public class AddsceneActivity extends BaseActivity implements View.OnClickListener{
