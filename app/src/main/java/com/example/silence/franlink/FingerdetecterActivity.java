@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.silence.franlink.BaseActivity;
 import com.example.silence.franlink.R;
 import com.example.silence.franlink.util.CryptoObjectHelper;
+import com.example.silence.franlink.util.MqttManager;
 import com.example.silence.franlink.util.MyAuthCallback;
 
 public class FingerdetecterActivity extends BaseActivity {
@@ -63,8 +64,10 @@ public class FingerdetecterActivity extends BaseActivity {
                     case MSG_AUTH_SUCCESS:
                         //认证成功 执行接下来的开门操作
                         setResultInfo(R.string.fingerprint_success);
-                        finish();
+                        MqttManager.getInstance().publish("gpio",1,"{\"pin\":10,\"value\": 1}");
                         cancellationSignal = null;
+                        Toast.makeText(FingerdetecterActivity.this,"认证成功,门即将打开",Toast.LENGTH_SHORT).show();
+                        finish();
                         break;
                     case MSG_AUTH_FAILED:
                         setResultInfo(R.string.fingerprint_not_recognized);

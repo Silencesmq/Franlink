@@ -39,6 +39,7 @@ import com.arcsoft.genderestimation.ASGE_FSDKError;
 import com.arcsoft.genderestimation.ASGE_FSDKFace;
 import com.arcsoft.genderestimation.ASGE_FSDKGender;
 import com.arcsoft.genderestimation.ASGE_FSDKVersion;
+import com.example.silence.franlink.util.MqttManager;
 import com.guo.android_extend.java.AbsLoop;
 import com.guo.android_extend.java.ExtByteArrayOutputStream;
 import com.guo.android_extend.tools.CameraHelper;
@@ -172,7 +173,8 @@ public class FacedetecterActivity extends BaseActivity implements CameraSurfaceV
                             }
                             mImageView.setImageAlpha(255);
                             mImageView.setImageBitmap(bmp);
-                            Toast.makeText(FacedetecterActivity.this,"认证成功",Toast.LENGTH_SHORT).show();
+                            MqttManager.getInstance().publish("gpio",1,"{\"pin\":10,\"value\": 1}");
+                            Toast.makeText(FacedetecterActivity.this,"认证成功,门即将打开",Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     });

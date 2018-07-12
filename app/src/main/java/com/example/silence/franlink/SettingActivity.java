@@ -21,6 +21,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -79,51 +81,19 @@ public class SettingActivity extends BaseActivity {
                         .show();
             }
         });
-        Button facedetecter=(Button)findViewById(R.id.button_facedetecter);
-        facedetecter.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Application app = (Application) SettingActivity.this.getApplicationContext();
-                        app.mFaceDB.loadFaces();
-                        SettingActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if( ((Application)getApplicationContext()).mFaceDB.mRegister.isEmpty() ) {
-                                    Toast.makeText(SettingActivity.this, "没有注册人脸，请先注册！", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    new AlertDialog.Builder(SettingActivity.this)
-                                            .setTitle("请选择相机")
-                                            .setIcon(android.R.drawable.ic_dialog_info)
-                                            .setItems(new String[]{"后置相机", "前置相机"}, new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    startDetector(which);
-                                                }
-                                            })
-                                            .show();
-                                }
-                            }
-                        });
-                    }
-                }).start();
-            }
-        });
         RadioGroup verify=(RadioGroup)findViewById(R.id.radiogroup_verify);
         RadioButton password=(RadioButton)findViewById(R.id.radio_password);
         RadioButton face=(RadioButton)findViewById(R.id.radio_face);
         RadioButton finger=(RadioButton)findViewById(R.id.radio_finger);
         int verify_choose=pref.getInt("verify_choose",Verify_pass);
         switch (verify_choose){
-            case 0:
+            case Verify_pass:
                 password.setChecked(true);
                 break;
-            case 1:
+            case Verify_face:
                 face.setChecked(true);
                 break;
-            case 2:
+            case Verify_fing:
                 finger.setChecked(true);
                 break;
         }
@@ -155,6 +125,21 @@ public class SettingActivity extends BaseActivity {
                 ActivityCollector.finishAll();
             }
         });
+        CheckBox floatball=(CheckBox)findViewById(R.id.checkBox_floatball);
+        Boolean floatball_choose=pref.getBoolean("floatball",false);
+        floatball.setChecked(floatball_choose);
+        floatball.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                editor=pref.edit();
+                if(b){
+                    editor.putBoolean("floatball",true);
+                }else{
+                    editor.putBoolean("floatball",false);
+                }
+                editor.apply();
+            }
+        });
     }
 
     @Override
@@ -172,14 +157,6 @@ public class SettingActivity extends BaseActivity {
                 Log.i(TAG, "bmp [" + bmp.getWidth() + "," + bmp.getHeight());
             }
             startRegister(bmp, file);
-        } else if (requestCode == REQUEST_CODE_OP) {
-            Log.i(TAG, "RESULT =" + resultCode);
-            if (data == null) {
-                return;
-            }
-            Bundle bundle = data.getExtras();
-            String path = bundle.getString("imagePath");
-            Log.i(TAG, "path="+path);
         } else if (requestCode == REQUEST_CODE_IMAGE_CAMERA && resultCode == RESULT_OK) {
             Uri mPath = ((Application)(SettingActivity.this.getApplicationContext())).getCaptureImage();
             String file = getPath(mPath);
@@ -193,12 +170,6 @@ public class SettingActivity extends BaseActivity {
         Bundle bundle = new Bundle();
         bundle.putString("imagePath", file);
         it.putExtras(bundle);
-        startActivityForResult(it, REQUEST_CODE_OP);
-    }
-
-    private void startDetector(int camera) {
-        Intent it = new Intent(SettingActivity.this, FacedetecterActivity.class);
-        it.putExtra("Camera", camera);
         startActivityForResult(it, REQUEST_CODE_OP);
     }
 

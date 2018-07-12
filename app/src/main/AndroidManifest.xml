@@ -10,8 +10,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-
-    <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
 
     <application
         android:name=".Application"
@@ -36,7 +35,12 @@
         <activity android:name=".SettingActivity" />
         <activity android:name=".FaceregisterActivity" />
         <activity android:name=".FacedetecterActivity" />
-        <activity android:name=".FingerdetecterActivity"></activity>
+        <activity android:name=".TemptActivity" />
+        <activity android:name=".AdddeviceActivity"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+        <activity android:name=".FingerdetecterActivity" />
+        <activity android:name=".AddsceneActivity"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" ></activity>
     </application>
 
 </manifest>

@@ -15,8 +15,8 @@ public class Event<T> {
     public static final class EventCode {
         public static final int LoginSucceed = 0x111111;
         public static final int LoginFail = 0x222222;
-        public static final int C = 0x333333;
-        public static final int D = 0x444444;
+        public static final int LoadDeviceDatabase = 0x333333;
+        public static final int LoadSceneDatabase = 0x444444;
         // other more
     }
 

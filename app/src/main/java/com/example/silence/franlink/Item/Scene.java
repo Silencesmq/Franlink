@@ -1,21 +1,49 @@
 package com.example.silence.franlink.Item;
 
-public class Scene {
+import org.litepal.crud.DataSupport;
+import org.litepal.crud.LitePalSupport;
+
+public class Scene extends LitePalSupport {
+    private long number;
     private String name;
-    private int imageId;
+    private String owner;
     private int type;
-    public Scene(String name,int imageId,int type){
+    public Scene(long number,String name,int type,String owner){
+        this.number=number;
         this.name=name;
-        this.imageId=imageId;
         this.type=type;
+        this.owner=owner;
     }
-    public String getName(){
+
+    public long getNumber() {
+        return number;
+    }
+
+    public void setNumber(long number) {
+        this.number = number;
+    }
+
+    public String getName() {
         return name;
     }
-    public int getImageId(){
-        return imageId;
+
+    public void setName(String name) {
+        this.name = name;
     }
-    public int getType(){
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public int getType() {
         return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

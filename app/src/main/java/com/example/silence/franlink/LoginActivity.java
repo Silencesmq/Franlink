@@ -101,6 +101,7 @@ public class LoginActivity extends BaseActivity {
                                 else {
                                     editor.clear();
                                 }
+                                Application.owner=accountEdit.getText().toString();
                                 editor.apply();
                                 EventBusUtil.sendEvent(new Event<String>(Event.EventCode.LoginSucceed,""));
                             }else if(retCode==0){

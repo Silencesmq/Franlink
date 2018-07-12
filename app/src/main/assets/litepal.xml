@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<litepal>
+    <dbname value="franlink"></dbname>
+    <version value="6"></version>
+
+    <list>
+        <mapping class="com.example.silence.franlink.Item.Device"></mapping>
+        <mapping class="com.example.silence.franlink.Item.Scene"></mapping>
+    </list>
+</litepal>

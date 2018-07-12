@@ -7,10 +7,12 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.util.Log;
 
-public class Application  extends android.app.Application{
+public class Application  extends org.litepal.LitePalApplication{
     private final String TAG = this.getClass().toString();
     public FaceDB mFaceDB;
     Uri mImage;
+
+    public static String owner;
 
     @Override
     public void onCreate() {

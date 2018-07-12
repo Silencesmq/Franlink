@@ -22,11 +22,11 @@ import lecho.lib.hellocharts.model.ValueShape;
 import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.LineChartView;
 
-public class TemptActivity extends AppCompatActivity implements android.view.View.OnClickListener{
+public class TemptActivity extends BaseActivity{
+
+    private int flagtemhum;
 
     private lecho.lib.hellocharts.view.LineChartView chartView;
-    private android.widget.Button but_1;
-    private android.widget.Button but_2;
     java.util.List<lecho.lib.hellocharts.model.Line> chartlines = new java.util.ArrayList<lecho.lib.hellocharts.model.Line>();
     List<AxisValue> mAxisXValues = new ArrayList<AxisValue>();
     List<PointValue> pointValues = new ArrayList<PointValue>();
@@ -41,10 +41,21 @@ public class TemptActivity extends AppCompatActivity implements android.view.Vie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tempt);
         chartView=(LineChartView)findViewById(R.id.chartView);
-        but_1=(Button)findViewById(R.id.but_1);
-        but_2=(Button)findViewById(R.id.but_2);
-        but_1.setOnClickListener(this);
-        but_2.setOnClickListener(this);
+        initTem();
+        flagtemhum=0;
+        Button temhum=(Button)findViewById(R.id.button_temhum);
+        temhum.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                if (flagtemhum==0){
+                    initHum();
+                    flagtemhum=1;
+                }else {
+                    initTem();
+                    flagtemhum=0;
+                }
+            }
+        });
     }
 
     public void setKLine(int type,List<DateForLine> list){
@@ -131,43 +142,6 @@ public class TemptActivity extends AppCompatActivity implements android.view.Vie
 
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.but_1:
-                List<DateForLine> list1=new ArrayList<>();
-                list1.add(new DateForLine("201703040130","20.8"));
-                list1.add(new DateForLine("201703040230","3.5"));
-                list1.add(new DateForLine("201703040330","10.6"));
-                list1.add(new DateForLine("201703040430","-20"));
-                list1.add(new DateForLine("201703040530","-6"));
-                list1.add(new DateForLine("201703040630","5.5"));
-                list1.add(new DateForLine("201703040730","-10.5"));
-                list1.add(new DateForLine("201703040830","-8.7"));
-                list1.add(new DateForLine("201703040930","5.8"));
-                list1.add(new DateForLine("201703041030","20"));
-                list1.add(new DateForLine("201703041130","17"));
-                list1.add(new DateForLine("201703041230","25.5"));
-                setKLine(1,list1);
-                break;
-            case R.id.but_2:
-                List<DateForLine> list2=new ArrayList<>();
-                list2.add(new DateForLine("201703040130","70"));
-                list2.add(new DateForLine("201703040230","51"));
-                list2.add(new DateForLine("201703040330","23"));
-                list2.add(new DateForLine("201703040430","42"));
-                list2.add(new DateForLine("201703040530","19"));
-                list2.add(new DateForLine("201703040630","5"));
-                list2.add(new DateForLine("201703040730","63"));
-                list2.add(new DateForLine("201703040830","77"));
-                list2.add(new DateForLine("201703040930","42"));
-                list2.add(new DateForLine("201703041030","20"));
-                list2.add(new DateForLine("201703041130","11"));
-                list2.add(new DateForLine("201703041230","44"));
-                setKLine(2,list2);
-                break;
-        }
-    }
 
     public String subTimeMonth(String time){
         return time.substring(4,6);
@@ -181,5 +155,37 @@ public class TemptActivity extends AppCompatActivity implements android.view.Vie
     public int parseHour2Ten(String time){
         return Integer.parseInt(time.substring(6,8))*24+
                 Integer.parseInt(time.substring(8,10));
+    }
+    private void  initTem(){
+        List<DateForLine> list1=new ArrayList<>();
+        list1.add(new DateForLine("201803040130","20.8"));
+        list1.add(new DateForLine("201803040230","3.5"));
+        list1.add(new DateForLine("201803040330","10.6"));
+        list1.add(new DateForLine("201803040430","-20"));
+        list1.add(new DateForLine("201703040530","-6"));
+        list1.add(new DateForLine("201703040630","5.5"));
+        list1.add(new DateForLine("201703040730","-10.5"));
+        list1.add(new DateForLine("201703040830","-8.7"));
+        list1.add(new DateForLine("201703040930","5.8"));
+        list1.add(new DateForLine("201703041030","20"));
+        list1.add(new DateForLine("201703041130","17"));
+        list1.add(new DateForLine("201703041230","25.5"));
+        setKLine(1,list1);
+    }
+    private void  initHum(){
+        List<DateForLine> list2=new ArrayList<>();
+        list2.add(new DateForLine("201703040130","70"));
+        list2.add(new DateForLine("201703040230","51"));
+        list2.add(new DateForLine("201703040330","23"));
+        list2.add(new DateForLine("201703040430","42"));
+        list2.add(new DateForLine("201703040530","19"));
+        list2.add(new DateForLine("201703040630","5"));
+        list2.add(new DateForLine("201703040730","63"));
+        list2.add(new DateForLine("201703040830","77"));
+        list2.add(new DateForLine("201703040930","42"));
+        list2.add(new DateForLine("201703041030","20"));
+        list2.add(new DateForLine("201703041130","11"));
+        list2.add(new DateForLine("201703041230","44"));
+        setKLine(2,list2);
     }
 }
