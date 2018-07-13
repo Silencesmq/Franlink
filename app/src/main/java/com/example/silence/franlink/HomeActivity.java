@@ -153,7 +153,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        MqttManager.getInstance().creatConnect("tcp://139.196.139.63:1883", "android", "123456", "789","fire");
+        MqttManager.getInstance().creatConnect("tcp://139.196.139.63:1883", "android", "123456", Application.owner,"android");
         MqttManager.getInstance().subscribe("fire",1);
         InitView();
         InitEvent();
