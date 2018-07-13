@@ -16,18 +16,24 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.silence.franlink.util.ActivityCollector;
+import com.example.silence.franlink.util.MqttManager;
 
 public class SettingActivity extends BaseActivity {
     private final String TAG = this.getClass().toString();
@@ -47,38 +53,61 @@ public class SettingActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_setting);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.back);
+        }
         pref= PreferenceManager.getDefaultSharedPreferences(this);
         Button faceregister=(Button)findViewById(R.id.button_faceregister);
         faceregister.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view) {
-                new AlertDialog.Builder(SettingActivity.this)
-                        .setTitle("请选择注册方式")
-                        .setIcon(android.R.drawable.ic_dialog_info)
-                        .setItems(new String[]{"打开图片", "拍摄照片"}, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                switch (which){
-                                    case 1:
-                                        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                                        ContentValues values = new ContentValues(1);
-                                        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-                                        Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-                                        ((Application)(SettingActivity.this.getApplicationContext())).setCaptureImage(uri);
-                                        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                                        startActivityForResult(intent, REQUEST_CODE_IMAGE_CAMERA);
-                                        break;
-                                    case 0:
-                                        Intent getImageByalbum = new Intent(Intent.ACTION_GET_CONTENT);
-                                        getImageByalbum.addCategory(Intent.CATEGORY_OPENABLE);
-                                        getImageByalbum.setType("image/jpeg");
-                                        startActivityForResult(getImageByalbum, REQUEST_CODE_IMAGE_OP);
-                                        break;
-                                    default:;
-                                }
-                            }
-                        })
-                        .show();
+            public void onClick(final View view) {
+                LayoutInflater factory = LayoutInflater.from(view.getContext());
+                final View v1 = factory.inflate(R.layout.alert_verify, null);
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext(),R.style.AlertDialog);
+                builder.setTitle("请输入密码验证").setView(v1).setCancelable(false)
+                        .setNegativeButton("Cancel", null);
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        EditText editText=(EditText)v1.findViewById(R.id.editText_pass);
+                        if(editText.getText().toString().equals(Application.pass)){
+                            new AlertDialog.Builder(SettingActivity.this,R.style.AlertDialog)
+                                    .setTitle("请选择注册方式")
+                                    .setIcon(android.R.drawable.ic_dialog_info)
+                                    .setItems(new String[]{"打开图片", "拍摄照片"}, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            switch (which){
+                                                case 1:
+                                                    Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                                                    ContentValues values = new ContentValues(1);
+                                                    values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+                                                    Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                                                    ((Application)(SettingActivity.this.getApplicationContext())).setCaptureImage(uri);
+                                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                                                    startActivityForResult(intent, REQUEST_CODE_IMAGE_CAMERA);
+                                                    break;
+                                                case 0:
+                                                    Intent getImageByalbum = new Intent(Intent.ACTION_GET_CONTENT);
+                                                    getImageByalbum.addCategory(Intent.CATEGORY_OPENABLE);
+                                                    getImageByalbum.setType("image/jpeg");
+                                                    startActivityForResult(getImageByalbum, REQUEST_CODE_IMAGE_OP);
+                                                    break;
+                                                default:;
+                                            }
+                                        }
+                                    })
+                                    .show();
+                        }else{
+                            Toast.makeText(view.getContext(),"密码错误,添加失败",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                builder.show();
             }
         });
         RadioGroup verify=(RadioGroup)findViewById(R.id.radiogroup_verify);
@@ -104,15 +133,12 @@ public class SettingActivity extends BaseActivity {
                 switch (i){
                     case R.id.radio_password:
                         editor.putInt("verify_choose",Verify_pass);
-                        Toast.makeText(SettingActivity.this,"pass",Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.radio_face:
                         editor.putInt("verify_choose",Verify_face);
-                        Toast.makeText(SettingActivity.this,"face",Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.radio_finger:
                         editor.putInt("verify_choose",Verify_fing);
-                        Toast.makeText(SettingActivity.this,"fing",Toast.LENGTH_SHORT).show();
                         break;
                 }
                 editor.apply();
@@ -284,5 +310,14 @@ public class SettingActivity extends BaseActivity {
                 cursor.close();
         }
         return null;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
     }
 }

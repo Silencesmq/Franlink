@@ -7,6 +7,30 @@
     android:layout_height="match_parent"
     tools:context=".FirealarmActivity"
     android:background="@drawable/beijing">
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar_firealarm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_firealarm"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:layout_scrollFlags="scroll|enterAlways|snap">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="20sp"
+                android:textColor="@color/colorwhite"
+                android:text="幸福小家"/>
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
     <TextView
         android:id="@+id/textView_firealarm"
         android:layout_width="wrap_content"

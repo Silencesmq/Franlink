@@ -9,8 +9,11 @@ import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -43,6 +46,14 @@ public class FingerdetecterActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fingerdetecter);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_finger);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.back);
+        }
         initfingerprintManager();
 
     }
@@ -205,5 +216,15 @@ public class FingerdetecterActivity extends BaseActivity {
         if ( cancellationSignal != null) {
             cancellationSignal.cancel();
         }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                cancellationSignal.cancel();
+                finish();
+                break;
+        }
+        return true;
     }
 }

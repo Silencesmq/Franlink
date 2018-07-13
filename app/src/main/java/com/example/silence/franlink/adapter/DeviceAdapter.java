@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,11 +26,13 @@ import com.example.silence.franlink.Application;
 import com.example.silence.franlink.FacedetecterActivity;
 import com.example.silence.franlink.FingerdetecterActivity;
 import com.example.silence.franlink.FirealarmActivity;
+import com.example.silence.franlink.HomeActivity;
 import com.example.silence.franlink.Item.Device;
 import com.example.silence.franlink.R;
 import com.example.silence.franlink.SettingActivity;
 import com.example.silence.franlink.TemptActivity;
 import com.example.silence.franlink.util.HttpUtil;
+import com.example.silence.franlink.util.MqttManager;
 
 import org.litepal.crud.DataSupport;
 import org.litepal.exceptions.DataSupportException;
@@ -80,7 +83,23 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
                         final int verify_choose=pref.getInt("verify_choose", SettingActivity.Verify_pass);
                         switch (verify_choose){
                             case SettingActivity.Verify_pass:
-                                Toast.makeText(view.getContext(),"choose_pass",Toast.LENGTH_SHORT).show();
+                                LayoutInflater factory = LayoutInflater.from(view.getContext());
+                                final View v1 = factory.inflate(R.layout.alert_verify, null);
+                                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext(),R.style.AlertDialog);
+                                builder.setTitle("请输入密码验证").setView(v1).setCancelable(false)
+                                        .setNegativeButton("Cancel", null);
+                                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        EditText editText=(EditText)v1.findViewById(R.id.editText_pass);
+                                        if(editText.getText().toString().equals(Application.pass)){
+                                            MqttManager.getInstance().publish("gpio",1,"{\"pin\":10,\"value\": 1}");
+                                            Toast.makeText(v1.getContext(),"认证成功,门即将打开",Toast.LENGTH_SHORT).show();
+                                        }else{
+                                            Toast.makeText(v1.getContext(),"密码错误,认证失败",Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                                builder.show();
                                 break;
                             case SettingActivity.Verify_face:{
                                 new Thread(new Runnable() {

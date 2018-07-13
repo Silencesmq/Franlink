@@ -265,7 +265,7 @@ public class FaceregisterActivity extends BaseActivity implements SurfaceHolder.
                     mExtImageView = (ExtImageView) layout.findViewById(R.id.extimageview);
                     mExtImageView.setImageBitmap((Bitmap) msg.obj);
                     final Bitmap face = (Bitmap) msg.obj;
-                    new AlertDialog.Builder(FaceregisterActivity.this)
+                    new AlertDialog.Builder(FaceregisterActivity.this,R.style.AlertDialog)
                             .setTitle("请输入注册名字")
                             .setIcon(android.R.drawable.ic_dialog_info)
                             .setView(layout)

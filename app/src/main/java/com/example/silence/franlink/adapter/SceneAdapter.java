@@ -56,8 +56,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.ViewHolder> 
             public void onClick(View view) {
                 int position=holder.getAdapterPosition();
                 Scene scene=mSceneList.get(position);
-                int type=scene.getType();
-                Toast.makeText(view.getContext(),"click_scene",Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(),"启动"+scene.getName()+"场景动作",Toast.LENGTH_SHORT).show();
             }
         });
         holder.sceneView.setOnLongClickListener(new View.OnLongClickListener() {

@@ -14,12 +14,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.silence.franlink.Item.Device;
+import com.example.silence.franlink.Item.Scene;
 import com.example.silence.franlink.bean.Event;
 import com.example.silence.franlink.util.ActivityCollector;
 import com.example.silence.franlink.util.EventBusUtil;
 import com.example.silence.franlink.util.HttpUtil;
 
 import org.json.JSONObject;
+import org.litepal.LitePal;
+import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
 
@@ -102,6 +106,9 @@ public class LoginActivity extends BaseActivity {
                                     editor.clear();
                                 }
                                 Application.owner=accountEdit.getText().toString();
+                                Application.pass=passwordEdit.getText().toString();
+                                Application.username=jsonObject.getString("username");
+                                Application.email=jsonObject.getString("email");
                                 editor.apply();
                                 EventBusUtil.sendEvent(new Event<String>(Event.EventCode.LoginSucceed,""));
                             }else if(retCode==0){

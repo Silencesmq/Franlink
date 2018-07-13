@@ -50,22 +50,22 @@
 
             <Button
                 android:id="@+id/tv_item_one"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:drawableTop="@drawable/houseblue32"
-                android:backgroundTint="#60363636"
+                android:theme="@style/AppTheme.Button"
                 android:text="设备"
                 />
 
             <Button
                 android:id="@+id/tv_item_two"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:backgroundTint="#60363636"
+                android:theme="@style/AppTheme.Button"
                 android:drawableTop="@drawable/housegrey32"
                 android:text="场景"
                 />
@@ -84,7 +84,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:headerLayout="@layout/nav_header"
         app:menu="@menu/nav_menu" />
 
 </android.support.v4.widget.DrawerLayout>

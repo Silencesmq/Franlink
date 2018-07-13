@@ -1,8 +1,11 @@
 package com.example.silence.franlink;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
@@ -21,6 +24,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.Layout;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +32,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -149,10 +155,10 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         setContentView(R.layout.activity_home);
         MqttManager.getInstance().creatConnect("tcp://139.196.139.63:1883", "android", "123456", "789","fire");
         MqttManager.getInstance().subscribe("fire",1);
-        initLitePalDatabase();
         InitView();
         InitEvent();
         InitFloatBall();
+        initLitePalDatabase();
     }
 
     private void InitFloatBall(){
@@ -168,11 +174,71 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 AnimationUtil.slideButtons(HomeActivity.this,floatingActionButton);
             }
         });
-        floatingActionButton1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) {  AnimationUtil.slideButtons(HomeActivity.this,floatingActionButton); Toast.makeText(getApplicationContext(), "1111111", Toast.LENGTH_SHORT).show(); }});
-        floatingActionButton2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) {  AnimationUtil.slideButtons(HomeActivity.this,floatingActionButton); Toast.makeText(getApplicationContext(), "2222222", Toast.LENGTH_SHORT).show(); }});
-        floatingActionButton3.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) {  AnimationUtil.slideButtons(HomeActivity.this,floatingActionButton); Toast.makeText(getApplicationContext(), "3333333", Toast.LENGTH_SHORT).show(); }});
-        floatingActionButton4.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) {  AnimationUtil.slideButtons(HomeActivity.this,floatingActionButton); Toast.makeText(getApplicationContext(), "4444444", Toast.LENGTH_SHORT).show(); }});
-        floatingActionButton5.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) {  AnimationUtil.slideButtons(HomeActivity.this,floatingActionButton); Toast.makeText(getApplicationContext(), "5555555", Toast.LENGTH_SHORT).show(); }});
+        floatingActionButton1.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) {  AnimationUtil.slideButtons(HomeActivity.this,floatingActionButton); Toast.makeText(v.getContext(), "启动起床场景动作", Toast.LENGTH_SHORT).show(); }});
+        floatingActionButton2.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) {  AnimationUtil.slideButtons(HomeActivity.this,floatingActionButton); Toast.makeText(v.getContext(), "启动回家场景动作", Toast.LENGTH_SHORT).show(); }});
+        floatingActionButton3.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                AnimationUtil.slideButtons(HomeActivity.this,floatingActionButton);
+                Intent it = new Intent(v.getContext(), TemptActivity.class);
+                v.getContext().startActivity(it);
+            }
+        });
+        floatingActionButton4.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) {  AnimationUtil.slideButtons(HomeActivity.this,floatingActionButton); Toast.makeText(v.getContext(), "启动睡觉场景动作", Toast.LENGTH_SHORT).show(); }});
+        floatingActionButton5.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(final View v) {
+                AnimationUtil.slideButtons(HomeActivity.this,floatingActionButton);
+                pref= PreferenceManager.getDefaultSharedPreferences(v.getContext());
+                final int verify_choose=pref.getInt("verify_choose", SettingActivity.Verify_pass);
+                switch (verify_choose){
+                    case SettingActivity.Verify_pass:
+                        LayoutInflater factory = LayoutInflater.from(v.getContext());
+                        final View v1 = factory.inflate(R.layout.alert_verify, null);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext(),R.style.AlertDialog);
+                        builder.setTitle("请输入密码验证").setView(v1).setCancelable(false)
+                                .setNegativeButton("Cancel", null);
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                EditText editText=(EditText)v1.findViewById(R.id.editText_pass);
+                                if(editText.getText().toString().equals(Application.pass)){
+                                    MqttManager.getInstance().publish("gpio",1,"{\"pin\":10,\"value\": 1}");
+                                    Toast.makeText(v1.getContext(),"认证成功,门即将打开",Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(v1.getContext(),"密码错误,认证失败",Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                        builder.show();
+                        break;
+                    case SettingActivity.Verify_face:{
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Application app = (Application) v.getContext().getApplicationContext();
+                                app.mFaceDB.loadFaces();
+                                ((Activity)v.getContext()).runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if( ((Application)v.getContext().getApplicationContext()).mFaceDB.mRegister.isEmpty() ) {
+                                            Toast.makeText(v.getContext(), "没有注册人脸，请先注册！", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Intent it = new Intent(v.getContext(), FacedetecterActivity.class);
+                                            it.putExtra("Camera", 1);
+                                            v.getContext().startActivity(it);
+
+                                        }
+                                    }
+                                });
+                            }
+                        }).start();
+                        break;
+                    }
+                    case SettingActivity.Verify_fing:
+                        Intent it = new Intent(v.getContext(), FingerdetecterActivity.class);
+                        v.getContext().startActivity(it);
+                        break;
+                }
+            }
+        });
     }
 
     private void InitView() {
@@ -184,6 +250,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         setSupportActionBar(toolbar);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
+        RelativeLayout headerLayout =(RelativeLayout) navView.inflateHeaderView(R.layout.nav_header);
+        TextView username=(TextView)headerLayout.findViewById(R.id.username);
+        TextView email=(TextView)headerLayout.findViewById(R.id.mail);
+        username.setText(Application.username);
+        email.setText(Application.email);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);

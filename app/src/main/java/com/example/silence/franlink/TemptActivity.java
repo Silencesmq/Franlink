@@ -1,8 +1,12 @@
 package com.example.silence.franlink;
 
 import android.graphics.Color;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -40,6 +44,14 @@ public class TemptActivity extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tempt);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_tempt);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.back);
+        }
         chartView=(LineChartView)findViewById(R.id.chartView);
         initTem();
         flagtemhum=0;
@@ -158,34 +170,43 @@ public class TemptActivity extends BaseActivity{
     }
     private void  initTem(){
         List<DateForLine> list1=new ArrayList<>();
-        list1.add(new DateForLine("201803040130","20.8"));
-        list1.add(new DateForLine("201803040230","3.5"));
-        list1.add(new DateForLine("201803040330","10.6"));
-        list1.add(new DateForLine("201803040430","-20"));
-        list1.add(new DateForLine("201703040530","-6"));
-        list1.add(new DateForLine("201703040630","5.5"));
-        list1.add(new DateForLine("201703040730","-10.5"));
-        list1.add(new DateForLine("201703040830","-8.7"));
-        list1.add(new DateForLine("201703040930","5.8"));
-        list1.add(new DateForLine("201703041030","20"));
-        list1.add(new DateForLine("201703041130","17"));
-        list1.add(new DateForLine("201703041230","25.5"));
+        list1.add(new DateForLine("201807121130","26"));
+        list1.add(new DateForLine("201807121230","26"));
+        list1.add(new DateForLine("201807121330","25"));
+        list1.add(new DateForLine("201807121430","24"));
+        list1.add(new DateForLine("201807121530","23"));
+        list1.add(new DateForLine("201807121630","24"));
+        list1.add(new DateForLine("201807121730","24"));
+        list1.add(new DateForLine("201807121830","25"));
+        list1.add(new DateForLine("201807121930","26"));
+        list1.add(new DateForLine("201807122030","24"));
+        list1.add(new DateForLine("201807122130","26"));
+        list1.add(new DateForLine("201807122230","26"));
         setKLine(1,list1);
     }
     private void  initHum(){
         List<DateForLine> list2=new ArrayList<>();
-        list2.add(new DateForLine("201703040130","70"));
-        list2.add(new DateForLine("201703040230","51"));
-        list2.add(new DateForLine("201703040330","23"));
-        list2.add(new DateForLine("201703040430","42"));
-        list2.add(new DateForLine("201703040530","19"));
-        list2.add(new DateForLine("201703040630","5"));
-        list2.add(new DateForLine("201703040730","63"));
-        list2.add(new DateForLine("201703040830","77"));
-        list2.add(new DateForLine("201703040930","42"));
-        list2.add(new DateForLine("201703041030","20"));
-        list2.add(new DateForLine("201703041130","11"));
-        list2.add(new DateForLine("201703041230","44"));
+        list2.add(new DateForLine("201807121130","70"));
+        list2.add(new DateForLine("201807121230","66"));
+        list2.add(new DateForLine("201807121330","64"));
+        list2.add(new DateForLine("201807121430","63"));
+        list2.add(new DateForLine("201807121530","65"));
+        list2.add(new DateForLine("201807121630","65"));
+        list2.add(new DateForLine("201807121730","69"));
+        list2.add(new DateForLine("201807121830","70"));
+        list2.add(new DateForLine("201807121930","66"));
+        list2.add(new DateForLine("201807122030","68"));
+        list2.add(new DateForLine("201807122130","67"));
+        list2.add(new DateForLine("201807122230","69"));
         setKLine(2,list2);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
     }
 }

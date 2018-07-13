@@ -13,6 +13,9 @@ public class Application  extends org.litepal.LitePalApplication{
     Uri mImage;
 
     public static String owner;
+    public static String pass;
+    public static String username;
+    public static String email;
 
     @Override
     public void onCreate() {

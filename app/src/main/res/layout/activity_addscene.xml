@@ -110,6 +110,7 @@
         android:layout_height="wrap_content"
         android:text="其他操作敬请期待"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"/>
 
 </RelativeLayout>

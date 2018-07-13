@@ -74,7 +74,6 @@ public class AddsceneActivity extends BaseActivity implements View.OnClickListen
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Toast.makeText(this,"sb",Toast.LENGTH_SHORT).show();
                 finish();
                 break;
         }
